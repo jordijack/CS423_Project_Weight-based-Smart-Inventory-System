@@ -266,9 +266,9 @@ canvas#histChart{width:100%!important;height:160px!important}
         <div class="item-tabs" id="item-tabs"></div>
 
         <div class="metric-grid">
-          <div class="mc ok" id="mc-w"><div class="mc-label">น้ำหนักรวม</div><div class="mc-val" id="v-w">—</div><div class="mc-unit">grams</div></div>
+          <div class="mc ok" id="mc-w"><div class="mc-label">น้ำหนักรวม</div><div class="mc-val" id="v-w">—</div><div class="mc-unit">kilograms</div></div>
           <div class="mc ok" id="mc-c"><div class="mc-label">จำนวนสินค้า</div><div class="mc-val ok" id="v-c">—</div><div class="mc-unit">ชิ้น</div></div>
-          <div class="mc" id="mc-u"><div class="mc-label">น้ำหนัก/หน่วย</div><div class="mc-val" id="v-u">—</div><div class="mc-unit">g/unit</div></div>
+          <div class="mc" id="mc-u"><div class="mc-label">น้ำหนัก/หน่วย</div><div class="mc-val" id="v-u">—</div><div class="mc-unit">kg/unit</div></div>
           <div class="mc" id="mc-t"><div class="mc-label">เกณฑ์แจ้งเตือน</div><div class="mc-val" id="v-t">—</div><div class="mc-unit">ชิ้น</div></div>
         </div>
 
@@ -284,7 +284,7 @@ canvas#histChart{width:100%!important;height:160px!important}
           <button class="ctrl-btn tare" onclick="doTare()"><span class="cb-icon">↺</span><div>Tare</div><div class="cb-label">ตั้งศูนย์น้ำหนัก</div></button>
           <button class="ctrl-btn calib" onclick="doCalib()"><span class="cb-icon">⚙</span><div>Calibrate</div><div class="cb-label">ปรับค่า sensor</div></button>
           <button class="ctrl-btn stop" id="pause-btn" onclick="togglePause()"><span class="cb-icon">⏸</span><div id="pause-label">Pause</div><div class="cb-label">หยุดอ่านค่า</div></button>
-          <button class="ctrl-btn add-btn" onclick="doAdd()"><span class="cb-icon">+</span><div>วางสินค้า</div><div class="cb-label">เพิ่ม +2 ชิ้น</div></button>
+          <button class="ctrl-btn add-btn" onclick="doAdd()"><span class="cb-icon">+</span><div>วางสินค้า</div><div class="cb-label">เพิ่ม +1 ชิ้น</div></button>
           <button class="ctrl-btn remove-btn" onclick="doRemove()"><span class="cb-icon">−</span><div>หยิบสินค้า</div><div class="cb-label">ลด −1 ชิ้น</div></button>
           <button class="ctrl-btn" onclick="doReset()"><span class="cb-icon">⊘</span><div>Reset all</div><div class="cb-label">คืนค่าเริ่มต้น</div></button>
         </div>
@@ -415,8 +415,8 @@ canvas#histChart{width:100%!important;height:160px!important}
 
 <script>
 const items=[
-  {name:"น้ำตาล (ถุง)",unitWeight:10,alertThreshold:3},
-  {name:"สบู่ก้อน",unitWeight:8,alertThreshold:5},
+  {name:"น้ำตาล (ถุง)",unitWeight:1,alertThreshold:3},
+  {name:"สบู่ก้อน",unitWeight:1,alertThreshold:5},
   {name:"กระป๋องทูน่า",unitWeight:2,alertThreshold:4}
 ];
 let counts=[8,7,6];
@@ -531,7 +531,7 @@ function startInterval(){
     const w=Math.max(0,counts[sel]*items[sel].unitWeight+noise);
     const cnt=counts[sel];
     document.getElementById('last-read').textContent=new Date().toLocaleTimeString('th-TH',{hour12:false});
-    addLog('SCALE',`Weight: ${w.toFixed(1)} g  |  Item: ${items[sel].name}  |  Count: ${cnt} pcs`,'ok');
+    addLog('SCALE',`Weight: ${w.toFixed(1)} kg  |  Item: ${items[sel].name}  |  Count: ${cnt} pcs`,'ok');
     if(cnt>0&&cnt<=items[sel].alertThreshold){
       addLog('ALERT',`สินค้าใกล้หมด! ${items[sel].name} เหลือ ${cnt} ชิ้น`,'warn');
     }
@@ -628,7 +628,7 @@ function selectItem(i){
   sel=i;
   document.querySelectorAll('.itab').forEach((t,j)=>t.classList.toggle('active',j===i));
   renderAll();
-  addLog('CMD',`Selected: ${items[i].name} (${items[i].unitWeight}g/unit)`,'cmd');
+  addLog('CMD',`Selected: ${items[i].name} (${items[i].unitWeight}kg/unit)`,'cmd');
 }
 
 function doTare(){
